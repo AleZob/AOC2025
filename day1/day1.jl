@@ -40,17 +40,24 @@ function password_zero_2(input_file)
                 input_number = parse(Int, s[2:end])
             end
             #include multiple rotations
-            zero_counter += abs(div(input_number, 100))
+            rotations, simple = divrem(input_number, 100)
 
-            input_number = rem(input_number, 100)
+            zero_counter += abs(rotations)
+
+            input_number = simple
 
             number += input_number
-            if number <= 0
-                zero_counter += 1
-            elseif number >= 100
-                zero_counter += 1
+            if number != 0
+                if number <= 0
+                    zero_counter += 1
+                elseif number >= 100
+                    zero_counter += 1
+                end
             end
             number = mod(number, 100)
+            # println(s)
+            # @show rotations simple number zero_counter
+            # println("-"^10)
         end
     end
     print(zero_counter)
