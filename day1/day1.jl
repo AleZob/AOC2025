@@ -46,7 +46,8 @@ function password_zero_2(input_file)
             if number == 0
                 number += simple
                 if number <= 0
-
+                    # we do not count 0 and negatives as more visits for zero.
+                    # This is overcounting
                 elseif number >= 100
                     zero_counter += 1
                 end
