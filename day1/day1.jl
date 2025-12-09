@@ -23,7 +23,6 @@ function password_zero_1()
     print(zero_counter)
 end
 
-# 7257
 function password_zero_2(input_file)
     number = 50
     zero_counter = 0
@@ -44,10 +43,15 @@ function password_zero_2(input_file)
 
             zero_counter += abs(rotations)
 
-            input_number = simple
+            if number == 0
+                number += simple
+                if number <= 0
 
-            number += input_number
-            if number != 0
+                elseif number >= 100
+                    zero_counter += 1
+                end
+            else
+                number += simple
                 if number <= 0
                     zero_counter += 1
                 elseif number >= 100
