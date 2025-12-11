@@ -50,7 +50,7 @@ function invalid_ID_1(input_file)
         end
         @info ("-"^10)
     end
-    print(sum_out)
+    return sum_out
 end
 
 function invalid_ID_2(input_file)
@@ -89,5 +89,5 @@ function invalid_ID_2(input_file)
         end
         @info ("-"^10)
     end
-    print(sum_out)
+    return sum_out
 end
