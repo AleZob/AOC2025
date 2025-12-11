@@ -1,10 +1,9 @@
 function parse_input(input_file)::Vector{UnitRange{Int64}}
-    s = ""
-    open(input_file, "r") do f
-        s = readline(f)
-    end
-    s = split(s, ",")
-    s = s .|> (x -> split(x, "-")) .|> x -> parse.(Int, x)
+    s = readline(input_file) |>
+        x -> split(x, ",") .|>
+             (x -> split(x, "-")) .|>
+             x -> parse.(Int, x)
+    # not sure why I can't stack this one into pipes, but it gives an error
     s = s .|> x -> range(x[1], x[2])
     return s
 end
