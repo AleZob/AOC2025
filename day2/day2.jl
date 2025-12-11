@@ -13,6 +13,15 @@ function repeat(number)
     return number * 10^(ndigits(number)) + number
 end
 
+# repeat(number, 1) <=> repeat(number)
+function repeat(number, times)
+    new_number = number
+    for i in 1:times
+        new_number = new_number * 10^(ndigits(number)) + number
+    end
+    return new_number
+end
+
 function invalid_ID_1(input_file)
     s = parse_input(input_file)
     sum_out = 0
@@ -49,25 +58,34 @@ function invalid_ID_2(input_file)
     sum_out = 0
     for range_s in s
         @info range_s
+        avoid_duplicates = []
         start = range_s.start
         stop = range_s.stop
         startd = ndigits(start)
         stopd = ndigits(stop)
-        ndig = 0
-
-        ndig = iseven(startd) ? startd / 2 : (startd + 1) / 2
-        number::Integer = 10^(ndig - 1)
-        repeated = 0
-        # idea: start in another loop and increase digits, untill we have too much to repeat
-        @info "Entering the loop"
+        ndig = 1
         while true
-            repeated = repeat(number)
-            repeated > stop && break
-            if repeated ∈ range_s
-                @info repeated
-                sum_out += repeated
+            ndig * 2 > stopd && break
+            # idea: start in another loop and increase digits, untill we have too much to repeat
+            for times in Iterators.countfrom(1)
+                ndig * (times + 1) < startd && continue # skip to good stuff
+                ndig * (times + 1) > stopd && break # there is no more
+                number::Integer = 10^(ndig - 1)
+                repeated = 0
+                for number in Iterators.countfrom(number)
+                    repeated = repeat(number, times)
+                    repeated > stop && break
+                    if repeated ∈ range_s
+                        repeated ∈ avoid_duplicates && continue
+                        @info repeated
+                        push!(avoid_duplicates, repeated)
+                        sum_out += repeated
+                    end
+                    number += 1
+                end
             end
-            number += 1
+            ndig += 1
+
         end
         @info ("-"^10)
     end
