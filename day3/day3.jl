@@ -27,16 +27,14 @@ function part_1(input_file)
     return sum
 end
 
-function part_2(input_file, num=12)
-    s = parse_input(input_file)
-    sum = 0
-    for x in s
-        indexes = partialsortperm(x, 1:num, rev=true)
-        look = []
-        for (k, index) in enumerate(indexes)
-            look = x[index:end]
-            look.size[1] >= num && break
-        end
+function best_slice(x, num=12)
+    indexes = partialsortperm(x, 1:num, rev=true)
+    look = []
+    for (k, index) in enumerate(indexes)
+        look = x[index:end]
+        look.size[1] >= num && break
+    end
+    if look.size[1] == num
         indexes = partialsortperm(look, 1:num, rev=true)
         sort!(indexes)
         num_view = view(look, indexes)
@@ -51,8 +49,18 @@ function part_2(input_file, num=12)
             n += num_view[k] * 10^(k - 1)
         end
         @show n
-        sum += n
+        return n
+    else
+        @show num
+        return look[1] * 10^(num - 1) + best_slice(look[2:end], num - 1)
+    end
+end
 
+function part_2(input_file, num=12)
+    s = parse_input(input_file)
+    sum = 0
+    for x in s
+        sum += best_slice(x)
     end
     return sum
 end
