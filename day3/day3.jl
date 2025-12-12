@@ -27,6 +27,32 @@ function part_1(input_file)
     return sum
 end
 
-function part_2(input_file)
+function part_2(input_file, num=12)
     s = parse_input(input_file)
+    sum = 0
+    for x in s
+        indexes = partialsortperm(x, 1:num, rev=true)
+        look = []
+        for (k, index) in enumerate(indexes)
+            look = x[index:end]
+            look.size[1] >= num && break
+        end
+        indexes = partialsortperm(look, 1:num, rev=true)
+        sort!(indexes)
+        num_view = view(look, indexes)
+        reverse!(num_view)
+        # @show num_view
+        # @show num_view[1]
+        # @show num_view[1] * 10^(1 - 1)
+        # @show num_view[num] * 10^(num - 1)
+        # @show sum(num_view[k] * 10^(k - 1) for k in 1:num)
+        n = 0
+        for k in 1:num
+            n += num_view[k] * 10^(k - 1)
+        end
+        @show n
+        sum += n
+
+    end
+    return sum
 end
