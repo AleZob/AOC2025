@@ -20,16 +20,18 @@ function push_range!(set::DisjointSets{Any}, range::UnitRange{Int})
         if x ∉ set
             push!(set, x)
         end
-        union!(a, repr, x)
+        union!(set, repr, x)
     end
 end
 
 
 function part_1(input_file)
     ranges, numbers = parse_input(input_file)
+    @info "here"
     sets = DisjointSets()
     push_range!.(Ref(sets), ranges[begin:end])
-    fresh = in.(num, Ref(a))
+    @info "here"
+    fresh = in.(num, Ref(sets))
     return reduce(+, fresh)
 end
 
