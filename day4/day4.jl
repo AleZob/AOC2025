@@ -26,7 +26,16 @@ function part_1(input_file)
     return reduce(+, accesible)
 end
 
+function remove_rolls(A)
+    count = summation_kernel(A)
+    accesible = count .|> x -> x != 0 && x < 4 + 1
+    accesible == zeros(size(A)) && return 0
+    remuved = reduce(+, accesible)
+    return remuved + remove_rolls(A - accesible .|> Bool)
+end
+
 
 function part_2(input_file, num=12)
     s = parse_input(input_file)
+    remove_rolls(s)
 end
