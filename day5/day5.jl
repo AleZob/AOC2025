@@ -57,6 +57,7 @@ end
 function part_1(input_file)
     @showtime ranges, numbers = parse_input(input_file)
     @show size(ranges)
+    @showtime sort!(ranges, by=last) # Because default sort is stable
     @showtime sort!(ranges, by=first)
     # combine_bollean = combination(ranges)
     # combined_ranges = []
