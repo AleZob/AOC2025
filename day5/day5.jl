@@ -63,11 +63,19 @@ function part_1(input_file)
     # combined_ranges = []
     cont = 0
     @info "Entering the loop"
+    # @showprogress for i in numbers
+    #     found = searchsortedlast(ranges, i, by=first)
+    #     found == 0 && continue
+    #     if i ∈ ranges[found]
+    #         cont += 1
+    #     end
+    # end
     @showprogress for i in numbers
-        found = searchsortedlast(ranges, i, by=first)
-        found == 0 && continue
-        if i ∈ ranges[found]
-            cont += 1
+        for range in ranges
+            if i in range
+                cont += 1
+                break
+            end
         end
     end
     return cont
