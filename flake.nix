@@ -20,7 +20,7 @@
           (pkgs.julia-bin.withPackages
             [
               "ProgressMeter" # why not?
-              "DataStructures"
+              # "DataStructures"
 
               # lsp related:
               "LanguageServer"
