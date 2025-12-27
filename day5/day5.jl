@@ -27,19 +27,38 @@ function combine_ranges(a::UnitRange, b::UnitRange)
     end
 end
 
-function combination(A)
+function range_combiner!(ranges::Vector{UnitRange{Int64}})
+    overlap = overlaps(ranges)
+    overlaps_num = reduce(+, overlap)
+    if overlaps_num == 0
+        return ranges
+    end
+    R = CartesianIndices(ranges)
+    step = oneunit(R[1])
+    for (rangeindex, over) in zip(reverse(R), reverse(overlap))
+        over == 0 && continue
+        @assert over == 1
+        # @show ranges[rangeindex] "with"
+        # @show ranges[rangeindex+step]
+        ranges[rangeindex] = combine_ranges(ranges[rangeindex], popat!(ranges, (rangeindex+step)[1]))
+    end
+    return range_combiner!(ranges)
+
+end
+
+function overlaps(A::UnitRange)
     out = zeros(size(A)) .|> Bool
     R = CartesianIndices(A)
     Ifirst, Ilast = first(R), last(R)
     step = oneunit(Ifirst)
     for I in R
         s = intersect(A[I], A[min(I + step, Ilast)])
-        @show s A[I] A[min(I + step, Ilast)]
+        # @show s A[I] A[min(I + step, Ilast)]
         if s.start < s.stop
             out[I] = 1
-
         end
     end
+    out[end] = 0
     out
 end
 
@@ -81,6 +100,15 @@ function part_1(input_file)
     return cont
 end
 
-function part_2(input_file, num=12)
-    s = parse_input(input_file)
+function part_2(input_file)
+    ranges, _ = parse_input(input_file)
+    # first sort the ranges
+    # NOTE: just `sort!(ranges)` takes ridiculus ammount of time
+    sort!(ranges, by=last)
+    sort!(ranges, by=first)
+    range_combiner!(ranges)
+    # here we have a vector of disjoint ranges
+    # ran.stop-ran.start+1 # number of elements in the range
+    count_ranges = ranges .|> x -> x.stop - x.start + 1
+    reduce(+, count_ranges)
 end
