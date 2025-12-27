@@ -45,7 +45,7 @@ function range_combiner!(ranges::Vector{UnitRange{Int64}})
 
 end
 
-function overlaps(A::UnitRange)
+function overlaps(A::Vector{UnitRange{Int64}})
     out = zeros(size(A)) .|> Bool
     R = CartesianIndices(A)
     Ifirst, Ilast = first(R), last(R)
@@ -53,7 +53,7 @@ function overlaps(A::UnitRange)
     for I in R
         s = intersect(A[I], A[min(I + step, Ilast)])
         # @show s A[I] A[min(I + step, Ilast)]
-        if s.start < s.stop
+        if s.start <= s.stop
             out[I] = 1
         end
     end
