@@ -1,4 +1,3 @@
-# using DataStructures
 using ProgressMeter
 
 
@@ -61,16 +60,6 @@ function overlaps(A::UnitRange)
     out[end] = 0
     out
 end
-
-# function push_range!(set::DisjointSets{Any}, range::UnitRange{Int})
-#     repr = range.start
-#     for x in range
-#         if x ∉ set
-#             push!(set, x)
-#         end
-#         union!(set, repr, x)
-#     end
-# end
 
 
 function part_1(input_file)
