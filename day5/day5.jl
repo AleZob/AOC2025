@@ -15,12 +15,12 @@ function parse_input(input_file)
     return ranges, numbers
 end
 
-function combine_ranges(a::UnitRange, b::UnitRange)
+function combine_ranges(a::UnitRange{Int64}, b::UnitRange{Int64})
     # ASSUME sort(a,b) <==> a,b
     # that is a.start < b.start, if a.start == b.start => a.stop < b.stop
-    if b.start <= a.stop
+    if a.start <= b.start <= a.stop <= b.stop
         return UnitRange(a.start, b.stop)
-    elseif a.stop == b.stop
+    elseif a.start <= b.start <= b.stop <= a.stop
         return a
     else
         @warn "Should not happend"
